@@ -1,0 +1,18 @@
+#content
+    {
+        font-size: 1.2em; /* 12px */
+        line-height: 1.33333333333333em; /* 16px / 12px * 10px */
+        position: absolute;
+        margin: 0 auto;
+        padding-left: 5.66666666666667em; /* 68px/12px */
+        max-width: 38.3333333333333em; /* 528px-68px/12px */
+    }
+    body{
+        overflow: hidden;
+        background:black;
+        margin:0;
+        padding:0;
+        display: flex;
+        justify-content:center;
+        align-items: center;
+    }
