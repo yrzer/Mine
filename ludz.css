@@ -1,24 +1,49 @@
 /* background-color: rgb36393f; */
+body{
+    overflow: hidden;
+    background:black;
+    margin:0;
+    padding:0;
+    display: flex;
+}
+.head.menu.menu.stópki{
+    justify-content:center;
+    align-items: center;
+    z-index: 500;
+}
+
 .head {
     width: 100%;
     float: left;
 background-color: rgba(54, 57, 63, 0.5);
 }
 .menu {
-width: 250px;
-float: left;
-overflow: hidden;
-background-color: rgba(54, 57, 63, 0.5);
+    width: 250px;
+    float: left;
+    overflow: hidden;
+    background-color: rgba(54, 57, 63, 0.5);
 }
+#guziki
+    {
+        font-size: 1.2em; /* 12px */
+        line-height: 1.33333333333333em; /* 16px / 12px * 10px */
+        position: absolute;
+        margin: 0 auto;
+        padding-left: 5.66666666666667em; /* 68px/12px */
+        max-width: 38.3333333333333em; /* 528px-68px/12px */
+    }
 .muzg {
-width: 554px;
-float: left;
-overflow: hidden;
-background-color: rgba(54, 57, 63, 0.5);
+    width: 554px;
+    float: left;
+    overflow: hidden;
+    background-color: rgba(54, 57, 63, 0.5);
 }
 .stópki {
-color: powderred;
-clear: both;
-width: 100%;
-background-color: rgba(54, 57, 63, 0.5);
+    color: powderred;
+    clear: both;
+    width: 100%;
+    background-color: rgba(54, 57, 63, 0.5);
+}
+.canvas {
+    z-index: 2;
 }
