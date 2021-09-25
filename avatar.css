@@ -1,0 +1,47 @@
+#avatar{
+	position:absolute;
+    align-items: center;
+}
+.avatar{
+  padding: 8px;
+  position:absolute;
+  vertical-align: middle;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  z-index:1000;
+}
+.cien
+{
+	position:relative;
+	width:155px;
+	height:155px;
+	border-radius:50%;
+	background: linear-gradient(45deg,transparent 50%,#e5f403);
+	animation: animate 3s linear infinite; 
+}
+@keyframes animate
+{
+	0%
+	{
+		transform: rotate(0deg);
+		filter: hue-rotate(0deg);
+	}
+	100%
+	{
+		transform: rotate(360deg);
+		filter: hue-rotate(360deg);
+	}
+}
+.cien:after {
+	content: '';
+	position: absolute;
+	top:6px;
+	left:6px;
+	right:6px;
+	bottom:6px;
+	background: linear-gradient(45deg,transparent 50%, #e5f403);
+	border-radius: 50%;
+	z-index: 1;
+	filter: blur(40px);
+}
