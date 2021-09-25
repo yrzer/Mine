@@ -1,22 +1,24 @@
+/* background-color: rgb36393f; */
 .head {
     width: 100%;
     float: left;
-background-color: #888;
+background-color: rgba(54, 57, 63, 0.5);
 }
 .menu {
 width: 250px;
 float: left;
 overflow: hidden;
-background-color: #ccc;
+background-color: rgba(54, 57, 63, 0.5);
 }
 .muzg {
 width: 554px;
 float: left;
 overflow: hidden;
-background-color: #fff;
+background-color: rgba(54, 57, 63, 0.5);
 }
-.footer {
+.stópki {
+color: powderred;
 clear: both;
 width: 100%;
-background-color: #888;
+background-color: rgba(54, 57, 63, 0.5);
 }
