@@ -1,49 +1,92 @@
-/* background-color: rgb36393f; */
-body{
-    overflow: hidden;
-    background:black;
-    margin:0;
-    padding:0;
-    display: flex;
-}
-.head.menu.menu.stópki{
-    justify-content:center;
-    align-items: center;
-    z-index: 500;
-}
+/* background-color: rgb36393f;  background-color: rgba(54, 57, 63, 0.5); */
 
-.head {
-    width: 100%;
-    float: left;
-background-color: rgba(54, 57, 63, 0.5);
-}
-.menu {
-    width: 250px;
-    float: left;
-    overflow: hidden;
+* {
+    box-sizing: border-box;
+  }
+  body{
+      overflow: hidden;
+      font-family:pixel;
+      background-color:#000;
+      z-index: 1000;
+  }
+  .obramuwka{
+    display: block;
+    /*
+  .wszystko{
+      padding: 2px;
+      justify-content:center;
+      align-items: center;
+      z-index: 500;
+      margin:0;
+  }
+  */
+  }
+  .head{
+    margin-bottom: 5px;
     background-color: rgba(54, 57, 63, 0.5);
-}
-#guziki
-    {
-        font-size: 1.2em; /* 12px */
-        line-height: 1.33333333333333em; /* 16px / 12px * 10px */
-        position: absolute;
-        margin: 0 auto;
-        padding-left: 5.66666666666667em; /* 68px/12px */
-        max-width: 38.3333333333333em; /* 528px-68px/12px */
+    padding:5px;
+    color: white;
+  }
+  .txt-h{
+    text-align: center;
+  }
+  .menu {
+    text-align: center;
+    margin-right: 0.4%;
+    background-color: rgba(54, 57, 63, 0.5);
+    float: left;
+    width: 20%;
+  }
+  .guzik {
+    padding: 8px;
+    margin-top: 7px;
+    border-bottom: 1px solid;
+  }
+  .muzg {
+    margin-left: 0.4%;
+    background-color: rgba(54, 57, 63, 0.5);
+    float: left;
+    width: 79.19%;
+    padding: 0 20px;
+    overflow: hidden;
+  }
+  .klata {
+    width: 100%;
+    padding: 10px 15px;
+    margin-top: 7px;
+    color: white;
+  }
+  
+  @media only screen and (max-width:800px) {
+    /* For tablets: */
+    .muzg {
+      width: 80%;
+      padding: 0;
     }
-.muzg {
-    width: 554px;
-    float: left;
-    overflow: hidden;
+    .klata {
+      width: 100%;
+    }
+  }
+  @media only screen and (max-width:500px) {
+    /* For mobile phones: */
+    .menu, .muzg, .klata {
+      width: 100%;
+    }
+  }
+  .stupki{
+    margin: -17px;
+    text-align:center;
+    font-size:19px;
+    color: rgba(255, 38, 38, 0.9);
     background-color: rgba(54, 57, 63, 0.5);
-}
-.stópki {
-    color: powderred;
-    clear: both;
-    width: 100%;
-    background-color: rgba(54, 57, 63, 0.5);
-}
+  }
+  .txt-s{
+      padding: 5px;
+  }
+
 .canvas {
-    z-index: 2;
+    position:absolute;
+    z-index: -1;
+    
+    
 }

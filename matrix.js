@@ -1,7 +1,6 @@
 var
   canvas = document.getElementById('canvas'),
-  ctx = canvas.getContext('2d')
-;
+  ctx = canvas.getContext('2d');
 
 (function() {
   // resize the canvas to fill browser window dynamically

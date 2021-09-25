@@ -1,21 +1,18 @@
-#avatar{
-	position:absolute;
-    align-items: center;
-}
 .avatar{
-  padding: 8px;
-  position:absolute;
-  vertical-align: middle;
-  width: 140px;
-  height: 140px;
+  position: absolute;
+  margin-left: 2.5px;
+  margin-top: 2.3px;
+  width: 75px;
+  height: 75px;
   border-radius: 50%;
   z-index:1000;
+  float: left;
 }
 .cien
 {
-	position:relative;
-	width:155px;
-	height:155px;
+	width:80px;
+	margin-left: 0.3px;
+	height:80px;
 	border-radius:50%;
 	background: linear-gradient(45deg,transparent 50%,#e5f403);
 	animation: animate 3s linear infinite; 
@@ -35,13 +32,8 @@
 }
 .cien:after {
 	content: '';
-	position: absolute;
-	top:6px;
-	left:6px;
-	right:6px;
-	bottom:6px;
 	background: linear-gradient(45deg,transparent 50%, #e5f403);
 	border-radius: 50%;
-	z-index: 5;
+	z-index: -1;
 	filter: blur(40px);
 }
