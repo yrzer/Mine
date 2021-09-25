@@ -1,0 +1,22 @@
+.head {
+    width: 100%;
+    float: left;
+background-color: #888;
+}
+.menu {
+width: 250px;
+float: left;
+overflow: hidden;
+background-color: #ccc;
+}
+.muzg {
+width: 554px;
+float: left;
+overflow: hidden;
+background-color: #fff;
+}
+.footer {
+clear: both;
+width: 100%;
+background-color: #888;
+}
