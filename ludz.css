@@ -55,6 +55,7 @@
     padding: 10px 15px;
     margin-top: 7px;
     color: white;
+    overflow-x: hidden;
   }
   
   @media only screen and (max-width:800px) {
@@ -66,11 +67,19 @@
     .klata {
       width: 100%;
     }
+    body{
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
   }
   @media only screen and (max-width:500px) {
     /* For mobile phones: */
     .menu, .muzg, .klata {
       width: 100%;
+    }
+    body{
+        overflow-x: hidden;
+        overflow-y: scroll;
     }
   }
   .stupki{
