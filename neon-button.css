@@ -9,9 +9,7 @@ a#button {
     padding: 15px 30px;
     color: rgb(70,255,0);
     text-transform: uppercase;
-    letter-spacing: 4px;
     text-decoration: none;
-    font-size: 24px;
     overflow: hidden;
     transition: 02s;
 }

@@ -11,6 +11,8 @@
   }
   .obramuwka{
     display: block;
+    margin-left: 10%;
+    margin-right: 10%;
     /*
   .wszystko{
       padding: 2px;
@@ -28,7 +30,11 @@
     color: white;
   }
   .txt-h{
+    position:absolute;
     text-align: center;
+    margin-top: -80px;
+    margin-left: 7%;
+    margin-right: 10%;
   }
   .menu {
     text-align: center;
@@ -71,6 +77,10 @@
         overflow-x: hidden;
         overflow-y: scroll;
     }
+    .canvas {
+        margin-bottom: -50%;
+    }
+    
   }
   @media only screen and (max-width:500px) {
     /* For mobile phones: */
@@ -80,6 +90,9 @@
     body{
         overflow-x: hidden;
         overflow-y: scroll;
+    }
+    .canvas {
+        margin-bottom: -50%;
     }
   }
   .stupki{
@@ -96,6 +109,9 @@
 .canvas {
     position:absolute;
     z-index: -1;
-    
-    
+    margin-top: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+
 }
