@@ -1,33 +1,11 @@
 #include <iostream>
-#include <fstream>
-#include <conio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <ctime>
-#include <cstdio>
-using namespace std;
-int lb_z(){int lb; cout<<"liczba graczy"; cin>>lb; return lb; }
-string *ng(int lb,string nik[]){
-    for (int i = 0; i < lb; i++)
-    {
-        cout << i+1 << "nik = ";
-        cin >> nik[i];
-        cout << endl;
-    }
-    return nik;
-}
-int main()
-{
-    int lb;
-    lb_z();
-    string nik[lb];
-    ng(lb,nik);
-    for (int i = 0; i < lb; i++)
-    {
-        cout << i+1 << "nik = ";
-        cout << nik[i] << " ";
-    }
-    cout << endl;
-main();
-    return 0 ;
+#include <fcntl.h>
+#include <io.h>
+#include <stdio.h>
+
+int main(void) {
+    _setmode(_fileno(stdout), _O_U16TEXT);
+    wprintf(L"\x043a\x043e\x0448\x043a\x0430 \x65e5\x672c\x56fd\n");
+    system("pause");
+    return 0;
 }
