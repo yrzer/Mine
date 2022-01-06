@@ -5,11 +5,13 @@
       "name": "C/C++ Runner: Debug Session",
       "type": "cppdbg",
       "request": "launch",
-      "args": [],
+      "args": [
+        ""
+      ],
       "stopAtEntry": false,
-      "cwd": "c:\\Users\\Asus\\Documents\\GitHub\\Mine",
+      "cwd": "c:/Users/Asus/Documents/GitHub/Mine",
       "environment": [],
-      "program": "c:\\Users\\Asus\\Documents\\GitHub\\Mine\\build\\Debug\\outDebug",
+      "program": "c:/Users/Asus/Documents/GitHub/Mine/build/Debug/outDebug",
       "internalConsoleOptions": "openOnSessionStart",
       "MIMode": "gdb",
       "miDebuggerPath": "C:\\Program Files\\MinGW\\bin\\gdb.exe",
