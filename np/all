@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pl">
+ <head>
+<!-- <link rel="stylesheet" href="dark_mode.css"> 
+<link rel="stylesheet" href="https://yrzer.github.io/pracownia_witr_i_apl/dark_mode.css"> -->
+ <meta charset="UTF-8">
+ <title>automat</title>
+ </head>
+<body>
+<form action="l_zakupu.php" method="post">
+<div name="konto">
+  <label for="name">imię:</label>
+  <input type="text" id="name" name="name">
+
+  <label for="surname">nazwisko:</label>
+  <input type="text" id="surname" name="surname">
+  
+  <label for="password">hasło:</label>
+  <input type="password" id="password" name="password"> <a href="r.php">lub rejestracja</a> </div>
+<?php
+session_start();
+if(isset($_SESSION['error'])) echo '<h3 style="color:red">ERROR błąd logowania</h3>';
+?>
+</form>
+</body></html>
+
+///////////////////////////
+
+<?php
+      $tab[] = array();
+    $pol = mysqli_connect("localhost","root","","baza");
+    $sql = "select * from sklep";
+    $i = 0;
+    if($w=mysqli_query($pol,$sql)){
+      while($record=mysqli_fetch_assoc($w)){
+        $tab[$i] = array($record["id"],$record["produkt"],$record["cena"],$record["ilosc"]);
+        $i++;
+      }
+    };
+	$tab[$y][2]
+  ?>
+  
+  //////////////////////////////
+  
+  <?php
+session_start();
+  require_once "connect.php";
+  $polaczenie = @new mysqli($host,$db_user,$db_pass,$db_name);
+  if($polaczenie->connect_errno!=0){echo "error polaczenie z baza";}
+  else {
+     $name = $_POST['name'];
+     $surname = $_POST['surname'];
+    $password = $_POST['password'];
+    echo $name." ".$surname;
+    $name = htmlentities($name, ENT_QUOTES, "UTF-8");
+    $name = htmlentities($surname, ENT_QUOTES, "UTF-8");
+    $name = htmlentities($password, ENT_QUOTES, "UTF-8");
+    $sql_1 = "select * from osoby where imie = '$name' AND nazwisko='$surname' AND haslo='$password'  ";
+
+    if($rezultat = @$polaczenie->query($sql_1)){
+        $ile_userow = $rezultat->num_rows;
+        if($ile_userow>0){
+            $wiersz = $rezultat->fetch_assoc();
+            $user = $wiersz['imie'];
+                unset($_SESSION['error']);
+            $rezultat->close();
+        }
+        else{
+            $_SESSION['error'] = '<h3 style="color:red">ERROR błąd logowania</h3>';
+            header('location: index.php');
+        };
+    }
+    else{
+        echo "error rezultat";
+    }
+    $polaczenie->close();
+  }
+?>
