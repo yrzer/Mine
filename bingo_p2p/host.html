@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>bingo - host</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h2>host<br>Twój ID: <span id="peer-id">Nie ustawiono</span></h2>
+    <center> 
+        <p id="step1">
+            <input type="text" id="custom-id" placeholder="Wpisz własne ID (krótkie)" value="yrzer">
+            <button onclick="createPeer()">Start</button>
+        </p>
+        <div id="game" style="display: none;">
+                <span id="liczby"></span><br> 
+                <p id="grid"></p>
+                <button onClick="bingo()">BINGO</button>
+        </div>
+        <p id="step3" style="display: none;">
+                <button onclick="start()">start</button>
+            <br>
+            <input type="text" id="message" placeholder="Wiadomość" onkeypress="handleKeyPress(event)">
+            <button onclick="sendMessage()">Wyślij</button>
+        </p>
+        <div id="chat"></div>
+    </center>
+    <script src="https://unpkg.com/peerjs@1.4.7/dist/peerjs.min.js"></script>
+    <script>
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        }
+        let peer;
+        let connections = [];
+        let messages = [];
+        let osoby1 = [];
+        let osoby2 = [];
+        function createPeer() {
+            const customId = document.getElementById("custom-id").value.trim();
+            peer = new Peer(customId);
+
+            peer.on('open', id => {
+                document.getElementById("peer-id").innerText = id;
+                document.getElementById("step1").style.display = "none"; // Ukryj krok 1
+            });
+
+            peer.on('connection', connection => {
+                connections.push(connection);
+                setupConnection(connection);
+                showChat();
+
+                // Dodaj do czatu informację o nowym połączeniu
+                const systemMessage = `System: conn - ${connection.peer}`;
+                messages.unshift(systemMessage);
+                updateChat();
+            });
+        }
+        function setupConnection(conn) {
+            conn.on('data', data => {
+                if (data.startsWith("system:")) {  
+                    let txt = data.replace(/^system:\s*/, ""); 
+                    console.log(data);
+                    if(txt == start) console.log(start);
+                    else if(txt.startsWith("wygrana1:")){
+                        let w = txt.replace(/^wygrana1: \s*/, ""); 
+                        console.log(w);
+                        wygrana=1;
+                        messages.unshift("Bingo! gracza: "+w); 
+                        osoby1.push(w);
+                        updateChat();
+                    }
+                    else if(txt.startsWith("wygrana2:")){
+                        let w = txt.replace(/^wygrana2: \s*/, ""); 
+                        console.log(w);
+                        wygrana=2;
+                        osoby2.push(w);
+                        messages.unshift("Bingo! gracza: "+w); 
+                        updateChat();
+                    }
+                } else {
+                    messages.unshift(data); 
+                    sendOther(data);
+                    updateChat();
+                }
+            });
+        }
+        function sendMessage() {
+            const message = document.getElementById("message").value.trim();
+            document.getElementById("message").value = "";
+            if (!message) return;
+            if (!connections.length) return alert("Nie połączono z nikim!");
+            const formattedMessage = `${peer.id}: ${message}`;
+            connections.forEach(conn => conn.send(formattedMessage));
+            messages.unshift(formattedMessage);
+            updateChat();
+        }
+        function updateChat() {
+            const chat = document.getElementById("chat");
+            chat.innerHTML = ""; 
+            messages.forEach(msg => {
+                const messageElement = document.createElement("p");
+                messageElement.textContent = msg;
+                chat.appendChild(messageElement);
+            });
+        }
+        function sendSys(text){
+            if (!connections.length) return alert("Nie połączono z nikim!");
+            const formattedMessage = `system: ${text}`;
+            connections.forEach(conn => conn.send(formattedMessage));
+            messages.unshift(formattedMessage);
+        }
+        function sendOther(text){
+            if (!connections.length) return alert("Nie połączono z nikim!");
+            const formattedMessage = text;
+            connections.forEach(conn => conn.send(formattedMessage));
+        }
+        function showChat() {
+            document.getElementById("step3").style.display = "block";
+        }
+        async function start(){
+            let raz = true;
+            sendSys("Start")
+            console.log("start")
+            document.getElementById("game").style.display = "block";
+            ON_load();
+            for (let i = 0; i < 75; i++) {
+                if(raz && wygrana==1){
+                    raz = false
+                    sendSys("runda2: RUNDA 1 dla: "+ osoby1.join("; "))
+                    sendSys("runda2: zaczynamy runde nr2")
+                    messages.unshift("runda2: RUNDA 1 dla: "+ osoby1.join("; ")); 
+                    messages.unshift("runda2: zaczynamy runde nr2"); 
+                    updateChat();
+                }
+                if (wygrana == 2){
+                    sendSys("runda2: RUNDA 2 dla: "+ osoby2.join(" "))
+                    sendSys("end: koniec gry")
+                    messages.unshift("runda2: RUNDA 2 dla: "+ osoby2.join(" ")); 
+                    messages.unshift("end: koniec gry"); 
+                    updateChat();
+                    tab_liczb = [];
+                    tab_bingo = [];
+                    wygrana = 0;
+                    document.getElementById("game").style.display = "none";
+                    break;
+                }
+                await sleep(5000);
+                let liczba = addliczby(tab_liczb, 75, 1)
+                sendSys("int: "+liczba);
+                tab_liczb.push(liczba);
+                document.getElementById("liczby").innerHTML  = tab_liczb.slice(-5).map((num, index, arr) => 
+                index === arr.length - 1 ? `<span class="grey_bg">${num}</span>` : num ).join(", ");
+            }
+            while(true){
+            await sleep(500);
+            if (wygrana == 2){
+                sendSys("runda2: RUNDA 2 dla: "+ osoby2.join(" "))
+                sendSys("end: koniec gry")
+                messages.unshift("runda2: RUNDA 2 dla: "+ osoby2.join(" ")); 
+                messages.unshift("end: koniec gry"); 
+                updateChat();
+                tab_liczb = [];
+                tab_bingo = [];
+                wygrana = 0;
+                document.getElementById("game").style.display = "none";
+                break;
+            }}
+        }
+        let tab_liczb = [];
+        let tab_bingo = [];
+        let wygrana = 0;
+        function addliczby(tab,max,min){
+            const x = Math.floor(Math.random() * (max - min+1) + min);
+            if (tab.includes(x)) return addliczby(tab,max,min); 
+            return x;
+        }       
+        function ON_load(){
+            for (let i = 1; i < 6; i++) {
+                let x = (i == 3) ? 1 : 0;
+                for (let a = x; a < 5; a++) {
+                    tab_bingo.push(addliczby(tab_bingo,i*15,(i*15-14)))
+                }
+            }
+            tab_bingo.sort((a, b) => a - b);
+            generateTable();
+        }
+        function generateTable() {
+            let data = [["B", "I", "N", "G", "O"]];
+            tab_bingo.splice(12, 0, "•"); 
+            for (let i = 0; i < 5; i++) {
+                data.push([]);
+            }
+            for (let col = 0; col < 5; col++) {
+                for (let row = 0; row < 5; row++) {
+                    data[row + 1][col] = tab_bingo[col * 5 + row];
+                }
+            }
+        
+            const grid = document.getElementById("grid");
+            grid.innerHTML = ""; 
+        
+            const table = document.createElement("table");
+            table.style.borderCollapse = "collapse";
+        
+            data.forEach((row, rowIndex) => {
+                const tr = document.createElement("tr");
+        
+                row.forEach((cell, colIndex) => {
+                    const td = document.createElement("td");
+                    td.textContent = cell;
+                    td.style.border = "1px solid white";
+                    td.style.padding = "10px";
+                    td.style.textAlign = "center";
+        
+                    if (rowIndex > 0) {
+                        let id = `${rowIndex-1}${colIndex}`;
+                        td.setAttribute("id", id);
+                        td.onclick = () => onClick(id);
+                    }
+        
+                    tr.appendChild(td);
+                });
+        
+                table.appendChild(tr);
+            });
+        
+            grid.appendChild(table);
+        }
+        function onClick(id) {
+            let liczba =parseInt( document.getElementById(id).textContent);
+            if (tab_liczb.includes(liczba) || id === "22") {
+                document.getElementById(id).classList.add("red_bg");
+            }
+        }
+        function sprawdzanie_linie() {
+            let ukos1 = 0, ukos2 = 0;
+        
+            for (let x = 0; x < 5; x++) {
+                let poziom = 0, pion = 0;
+        
+                for (let y = 0; y < 5; y++) {
+                    if (document.getElementById(`${x}${y}`).classList.contains("red_bg")) poziom++;
+                    if (document.getElementById(`${y}${x}`).classList.contains("red_bg")) pion++;
+                }
+        
+                if (poziom === 5 || pion === 5) return true;
+        
+                if (document.getElementById(`${x}${x}`).classList.contains("red_bg")) ukos1++;
+                if (document.getElementById(`${x}${4 - x}`).classList.contains("red_bg")) ukos2++;
+            }
+        
+            return ukos1 === 5 || ukos2 === 5;
+        }
+        function bingo() {
+            if (wygrana === 0 && sprawdzanie_linie()) {
+                console.log("Bingo!");
+                wygrana=1;
+                sendSys("wygrana1: "+peer.id)
+            } else if (wygrana === 1) {
+                let suma = 0;
+                for (let x = 0; x < 5; x++) {
+                    for (let y = 0; y < 5; y++) {
+                        if (document.getElementById(`${y}${x}`).classList.contains("red_bg")) suma++;
+                    }
+                }
+                if (suma === 25) {
+                    console.log("BINGO!!!");
+                    wygrana=2;
+                    sendSys("wygrana2: "+peer.id)
+                    messages.unshift("wygrana2: "+peer.id); 
+                    updateChat();
+                }
+            }
+
+        }
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+/* Ogólny wygląd strony */
+body {
+    background-color: black;
+    color: rgb(57, 191, 57);
+    font-family: Arial, sans-serif;
+    cursor: default;
+    user-select: none;
+}
+
+/* Przycisk startowy */
+button, input {
+    padding: 12px 20px;
+    font-size: 20px;
+    margin: 5px;
+}
+
+.start-btn {
+    background-color: rgb(0, 162, 255);
+    color: white;
+    border: none;
+}
+
+.bingo-btn {
+    background-color: rgb(255, 0, 0);
+    color: white;
+    border: none;
+    font-size: 24px;
+    padding: 15px;
+}
+
+/* Tabela BINGO */
+table {
+    border-collapse: collapse;
+    margin: 10px auto;
+}
+
+td {
+    border: 1px solid white;
+    padding: 10px;
+    text-align: center;
+    font-size: 20px;
+}
+
+.red_bg {
+    background-color: rgb(212, 0, 0);
+}
+
+.grey_bg {
+    background-color: rgb(50, 50, 50);
+}
+
+/* Styl dla czatu */
+#chat {
+    background-color: rgba(50, 50, 50, 0.5);
+    padding: 10px;
+    margin-top: 20px;
+    max-height: 200px;
+    overflow-y: auto;
+}
