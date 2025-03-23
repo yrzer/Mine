@@ -65,7 +65,7 @@
             connections.push(conn);
 
             conn.on('open', () => {
-                console.log("Połączono z", remoteId);
+                // console.log("Połączono z", remoteId);
                 setupConnection(conn);
                 showChat();
             });
@@ -74,31 +74,32 @@
             conn.on('data', data => {
                 if (data.startsWith("system:")) {  
                     let txt = data.replace(/^system:\s*/, ""); 
-                    console.log(data);
+                    // console.log(data);
                     if(txt == "Start") Start();
                     else if(txt.startsWith("int:")){
                         let int = txt.replace(/^int: \s*/, ""); 
-                        console.log(int);
+                        // console.log(int);
                         tab_liczb.push(parseInt(int));
                         document.getElementById("liczby").innerHTML  = tab_liczb.slice(-5).map((num, index, arr) => 
                         index === arr.length - 1 ? `<span class="grey_bg">${num}</span>` : num ).join(", ");
         
                     }else if(txt.startsWith("wygrana1:")){
                         let w = txt.replace(/^wygrana1: \s*/, ""); 
-                        console.log(w);
+                        // console.log(w);
                         wygrana=1;
                         messages.unshift("Bingo! gracza: "+w); 
                         updateChat();
                     }
                     else if(txt.startsWith("wygrana2:")){
                         let w = txt.replace(/^wygrana2: \s*/, ""); 
-                        console.log(w);
+                        // console.log(w);
                         wygrana=2;
-                        messages.unshift("Bingo! gracza: "+w); 
+                        messages.unshift("BINGO! gracza: "+w); 
                         updateChat();
                     }
                     else if(txt.startsWith("runda2:")){
                         let w = txt.replace(/^runda2: \s*/, ""); 
+                        console.log(w+" - "+data)
                         messages.unshift(w); 
                         updateChat();
                     }
@@ -108,11 +109,13 @@
                         updateChat();
                         tab_liczb = [];
                         tab_bingo = [];
+                        osoby1 = [];
+                        osoby2 = [];
                         wygrana = 0;
                         document.getElementById("game").style.display = "none";
                     }
                 }else if (data.startsWith( peer.id+":")) {  
-                    console.log(data);
+                    console.log("dostarczono");
                 } else {
                     messages.unshift(data); 
                     updateChat();
@@ -133,7 +136,7 @@
             if (!connections.length) return alert("Nie połączono z nikim!");
             const formattedMessage = `system: ${text}`;
             connections.forEach(conn => conn.send(formattedMessage));
-            messages.unshift(formattedMessage);
+            // messages.unshift(formattedMessage);
         }
         function updateChat() {
             const chat = document.getElementById("chat");
@@ -153,7 +156,7 @@
             document.getElementById("step3").style.display = "block";
         }
         function Start(){
-            console.log("start")
+            // console.log("start")
             document.getElementById("game").style.display = "block";
             ON_load();
         }
@@ -244,9 +247,8 @@
         }
         function bingo() {
             if (wygrana === 0 && sprawdzanie_linie()) {
-                console.log("Bingo!");
                 wygrana=1;
-                sendSys("wygrana1: "+peer.id)
+                sendSys("wygrana1: "+peer.id);
             } else if (wygrana === 1) {
                 let suma = 0;
                 for (let x = 0; x < 5; x++) {
@@ -255,11 +257,11 @@
                     }
                 }
                 if (suma === 25) {
-                    console.log("BINGO!!!");
                     wygrana=2;
-                    sendSys("wygrana2: "+peer.id)
+                    sendSys("wygrana2: "+peer.id);
                 }
             }
+            updateChat();
         }
     </script>
 </body>

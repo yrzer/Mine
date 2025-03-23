@@ -62,22 +62,24 @@
             conn.on('data', data => {
                 if (data.startsWith("system:")) {  
                     let txt = data.replace(/^system:\s*/, ""); 
-                    console.log(data);
+                   
                     if(txt == start) console.log(start);
                     else if(txt.startsWith("wygrana1:")){
                         let w = txt.replace(/^wygrana1: \s*/, ""); 
-                        console.log(w);
+                        // console.log(w);
                         wygrana=1;
+                        sendSys("wygrana1: "+w);
                         messages.unshift("Bingo! gracza: "+w); 
                         osoby1.push(w);
                         updateChat();
                     }
                     else if(txt.startsWith("wygrana2:")){
                         let w = txt.replace(/^wygrana2: \s*/, ""); 
-                        console.log(w);
+                        // console.log(w);
                         wygrana=2;
                         osoby2.push(w);
-                        messages.unshift("Bingo! gracza: "+w); 
+                        sendSys("wygrana2: "+w);
+                        messages.unshift("BINGO! gracza: "+w); 
                         updateChat();
                     }
                 } else {
@@ -110,7 +112,9 @@
             if (!connections.length) return alert("Nie połączono z nikim!");
             const formattedMessage = `system: ${text}`;
             connections.forEach(conn => conn.send(formattedMessage));
-            messages.unshift(formattedMessage);
+            let txt = formattedMessage.replace(/^system: \s*/, ""); 
+            if(!txt.startsWith("int:") && !txt.startsWith("runda2:")) messages.unshift(formattedMessage);
+            updateChat();
         }
         function sendOther(text){
             if (!connections.length) return alert("Nie połączono z nikim!");
@@ -123,7 +127,7 @@
         async function start(){
             let raz = true;
             sendSys("Start")
-            console.log("start")
+            // console.log("start")
             document.getElementById("game").style.display = "block";
             ON_load();
             for (let i = 0; i < 75; i++) {
@@ -131,19 +135,11 @@
                     raz = false
                     sendSys("runda2: RUNDA 1 dla: "+ osoby1.join("; "))
                     sendSys("runda2: zaczynamy runde nr2")
-                    messages.unshift("runda2: RUNDA 1 dla: "+ osoby1.join("; ")); 
-                    messages.unshift("runda2: zaczynamy runde nr2"); 
+                    messages.unshift("RUNDA 1 dla: "+ osoby1.join("; ")); 
+                    messages.unshift("zaczynamy runde nr2"); 
                     updateChat();
                 }
                 if (wygrana == 2){
-                    sendSys("runda2: RUNDA 2 dla: "+ osoby2.join(" "))
-                    sendSys("end: koniec gry")
-                    messages.unshift("runda2: RUNDA 2 dla: "+ osoby2.join(" ")); 
-                    messages.unshift("end: koniec gry"); 
-                    updateChat();
-                    tab_liczb = [];
-                    tab_bingo = [];
-                    wygrana = 0;
                     document.getElementById("game").style.display = "none";
                     break;
                 }
@@ -154,20 +150,31 @@
                 document.getElementById("liczby").innerHTML  = tab_liczb.slice(-5).map((num, index, arr) => 
                 index === arr.length - 1 ? `<span class="grey_bg">${num}</span>` : num ).join(", ");
             }
-            while(true){
+            while(true || wygrana == 2){
             await sleep(500);
-            if (wygrana == 2){
-                sendSys("runda2: RUNDA 2 dla: "+ osoby2.join(" "))
-                sendSys("end: koniec gry")
-                messages.unshift("runda2: RUNDA 2 dla: "+ osoby2.join(" ")); 
-                messages.unshift("end: koniec gry"); 
+            if(raz && wygrana==1){
+                raz = false
+                sendSys("runda2: RUNDA 1 dla: "+ osoby1.join("; "))
+                sendSys("runda2: zaczynamy runde nr2")
+                messages.unshift("RUNDA 1 dla: "+ osoby1.join("; ")); 
+                messages.unshift("zaczynamy runde nr2"); 
                 updateChat();
-                tab_liczb = [];
-                tab_bingo = [];
-                wygrana = 0;
+            }
+            if (wygrana == 2){
+
                 document.getElementById("game").style.display = "none";
                 break;
             }}
+            sendSys("runda2: RUNDA 2 dla: "+ osoby2.join(" "))
+            sendSys("end: koniec gry, wygrani: 1: "+osoby1.join(" ") + " 2: "+osoby2.join(" "))
+            messages.unshift("RUNDA 2 dla: "+ osoby2.join(" ")); 
+            messages.unshift("koniec gry"); 
+            updateChat();
+            tab_liczb = [];
+            tab_bingo = [];
+            osoby1 = [];
+            osoby2 = [];
+            wygrana = 0;
         }
         let tab_liczb = [];
         let tab_bingo = [];
@@ -256,9 +263,11 @@
         }
         function bingo() {
             if (wygrana === 0 && sprawdzanie_linie()) {
-                console.log("Bingo!");
                 wygrana=1;
-                sendSys("wygrana1: "+peer.id)
+                osoby1.push(peer.id);
+                sendSys("wygrana1: "+peer.id);
+                messages.unshift("BINGO! gracza:"+peer.id);
+                updateChat();
             } else if (wygrana === 1) {
                 let suma = 0;
                 for (let x = 0; x < 5; x++) {
@@ -267,16 +276,18 @@
                     }
                 }
                 if (suma === 25) {
-                    console.log("BINGO!!!");
+                    // console.log("BINGO!!!");
                     wygrana=2;
-                    sendSys("wygrana2: "+peer.id)
-                    messages.unshift("wygrana2: "+peer.id); 
+                    osoby2.push(peer.id);
+                    sendSys("wygrana2: "+peer.id);
+                    // console.log("wygrana2: "+peer.id);
+                    messages.unshift("BINGO! gracza:"+peer.id); 
                     updateChat();
                 }
             }
 
         }
-        function sleep(ms) {
+        function sleep(ms) { // 1000ms -> 1s
             return new Promise(resolve => setTimeout(resolve, ms));
         }
     </script>
